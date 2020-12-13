@@ -1,0 +1,7 @@
+jupyter
+jupyterlab
+pandas
+numpy
+selenium
+bs4
+
