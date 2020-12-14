@@ -1,5 +1,5 @@
 from getpass import getpass
-from os import system
+from os import system,listdir
 from . import get_data
 
 def manualAuth():
@@ -15,6 +15,14 @@ def storeSecret(userLogin, userPass):
     gpgCall = 'gpg -r {} --encrypt > {}'.format(gpgID,secretFilePath)
     systemCall = ' | '.join([printfCall, gpgCall])
     system(systemCall)
+    
+def resetSecret():
+    dataDirPath = get_data('')
+    dataDirContent = listdir(dataDirPath)
+    if 'secret.gpg' in dataDirContent:
+        system('rm {}'.format(dataDirPath + 'secret.gpg'))
+    else:
+        print('No secret stored.')
 
 # Retrieving secret
 def retrieveSecret():
@@ -26,3 +34,19 @@ def retrieveSecret():
         secret = [secretData.strip() for secretData in secretPipe.readlines()]
     system('rm {}'.format(secretPipePath))
     return secret
+
+def authModule(autoAuth=False):
+    dataDirPath = get_data('')
+    dataDirContent = listdir(dataDirPath)
+    if autoAuth:
+        if not 'secret.gpg' in dataDirContent:
+            storeSecret(*manualAuth())
+        return retrieveSecret()
+    else:
+        return manualAuth()
+    
+    
+        
+        
+    
+        
