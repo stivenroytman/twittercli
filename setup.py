@@ -15,7 +15,7 @@ setuptools.setup(
         description = "A Selenium-based twitter interface for python and command line that I am writing for shits and giggles.",
         long_description = long_description,
         long_description_content_type = "text/markdown",
-        url = "https://github.com/stevo/twitter-cli",
+        url = "https://github.com/stivenroytman/twitter-cli",
         packages = setuptools.find_packages(),
         classifiers = [
             "Programming Language :: Python :: 3",
