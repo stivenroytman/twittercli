@@ -3,7 +3,7 @@ from os import system,listdir
 from . import get_data
 
 def manualAuth():
-    userLogin = input('Username: ')
+    userLogin = input('Email: ')
     userPass = getpass()
     return [userLogin, userPass]
 

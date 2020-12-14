@@ -23,7 +23,8 @@ def driverInit(userLogin, userPass, headLess=False):
     sleep(5)
     return driver
 
-def sendTweet(driver, tweet):
+def sendTweet(driver, tweet=None):
+    if tweet == None: input('Tweet body: ')
     # typing the tweet
     dataContainer = driver.find_element_by_class_name('DraftEditor-editorContainer')
     inputLine = dataContainer.find_element_by_tag_name('div')
