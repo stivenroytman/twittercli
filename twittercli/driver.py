@@ -3,14 +3,6 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.firefox import options
 from os import system
 from time import sleep
-from pdb import set_trace
-
-# Retrieving secret
-def retrieveSecret():
-    system('gpg --decrypt secret.txt.gpg > secret &')
-    with open('secret', 'r') as secretFile:
-        secret = [secretData.strip() for secretData in secretFile.readlines()]
-    return secret
 
 # Logging in
 def driverInit(userLogin, userPass, headLess=False):
@@ -43,9 +35,3 @@ def sendTweet(driver, tweet):
             tweetButton = div
             break
     tweetButton.click()
-
-    
-  
-    
-    
-    
