@@ -6,7 +6,7 @@ if len(argv) == 2:
 else:
     tweetBody = input('Tweet body: ')
 
-twit = driver.driverInit(*auth.authModule(autoAuth=True), headLess=True)
+twit = driver.driverInit(*auth.authModule(), headLess=True)
 driver.sendTweet(twit, tweetBody)
 twit.quit()
 

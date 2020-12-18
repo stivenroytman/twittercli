@@ -7,3 +7,9 @@ node_modules/
 .secret.gpg
 *.ipynb
 *secret*
+build/
+dist/
+test/
+*.egg-info/
+debug.py
+devel.log
