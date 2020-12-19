@@ -13,3 +13,4 @@ test/
 *.egg-info/
 debug.py
 devel.log
+*.pkl
