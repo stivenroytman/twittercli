@@ -1,12 +1,40 @@
 from sys import argv
-from . import auth,driver
+from twittercli.TwitterBot import TwitterBot
 
-if len(argv) == 2:
-    tweetBody = argv[1]
-else:
-    tweetBody = input('Tweet body: ')
+numArgs = len(argv)
 
-twit = driver.driverInit(*auth.authModule(), headLess=True)
-driver.sendTweet(twit, tweetBody)
-twit.quit()
+if numArgs == 1:
+    print(
+"""
+Usage: 
+  twittercli <command> [options]
 
+Commands:
+  send [tweetBody]
+  scrape [numSteps]
+""")
+
+elif numArgs == 2:
+    tBot = TwitterBot()
+    tBot.initCore(headless=True)
+    command = argv[1]
+    if command == 'send':
+        tBot.sendTweet()
+    elif command == 'scrape':
+        tBot.scrapeTweets()
+        for tweet in tBot.tweetDB:
+            print(tweet)
+    tBot.termCore()
+
+elif numArgs == 3:
+    tBot = TwitterBot()
+    tBot.initCore(headless=True)
+    command = argv[1]
+    arg = argv[2]
+    if command == 'send':
+        tBot.sendTweet(arg)
+    elif command == 'scrape':
+        tBot.scrapeTweets(arg)
+        for tweet in tBot.tweetDB:
+            print(tweet)
+    tBot.termCore()
