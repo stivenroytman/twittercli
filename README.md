@@ -8,6 +8,13 @@ without having to go through the hoops of getting their API key. While somebody
 out there probably already put something like this together, I don't care, I am
 doing this for fun :)
 
+## Compatibility
+
+As of now, this program is only being tested on my personal setup. Will likely work
+on any Linux distro, and maybe OSX, but don't take my word for it. Tweaks to make it
+more compatible with Windows are coming... at some point.
+
+Also, Firefox is a dependency :')
 
 ## Installation
 

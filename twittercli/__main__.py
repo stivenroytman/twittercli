@@ -1,5 +1,8 @@
 from sys import argv
 from twittercli.TwitterBot import TwitterBot
+from os import getenv,system,remove
+
+EDITOR=getenv('EDITOR')
 
 numArgs = len(argv)
 
@@ -18,7 +21,14 @@ elif numArgs == 2:
     tBot = TwitterBot()
     tBot.initCore(headless=True)
     command = argv[1]
-    if command == 'send':
+    if command == 'send' and not EDITOR is None:
+        system('{} /tmp/tweet.txt'.format(EDITOR))
+        with open('/tmp/tweet.txt','r') as tweetFile:
+            tweetContent = tweetFile.readlines()
+        remove('/tmp/tweet.txt')
+        tweet = ' '.join(tweetContent)
+        tBot.sendTweet(tweet)
+    elif command == 'send':
         tBot.sendTweet()
     elif command == 'scrape':
         tBot.scrapeTweets()
