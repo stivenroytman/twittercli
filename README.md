@@ -44,6 +44,7 @@ from twittercli.TwitterBot import TwitterBot
 tweetBody = "Beep boop."
 tBot = TwitterBot() # initialize class object
 tBot.initCore() # initialize selenium core (don't worry about it lol)
+
 tBot.sendTweet(tweetBody) # send it out! 
 
 ```
@@ -55,7 +56,25 @@ If tweetBody not given, interactive input is triggered.
 
 ### Get feed
 
-Coming soon...
+#### CLI
+```bash
+python -m twittercli scrape [numSteps]
+```
+
+#### Python
+```python
+from twittercli.TwitterBot import TwitterBot
+
+tBot = TwitterBot() # initialize class object
+tBot.initCore() # initialize selenium core
+
+tBot.scrapeTweets(numSteps)
+```
+
+numSteps is an optional argument that is roughly proportional 
+to the number of tweets that will be scraped off your feed.
+Right now it just spits out a load of baloney into stdout.
+Much work still needs to be done on the parsing front...
 
 ### Search feed
 
