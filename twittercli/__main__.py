@@ -34,7 +34,7 @@ elif numArgs == 3:
     if command == 'send':
         tBot.sendTweet(arg)
     elif command == 'scrape':
-        tBot.scrapeTweets(arg)
+        tBot.scrapeTweets(int(arg))
         for tweet in tBot.tweetDB:
             print(tweet)
     tBot.termCore()

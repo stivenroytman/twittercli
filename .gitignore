@@ -14,3 +14,4 @@ test/
 debug.py
 devel.log
 *.pkl
+log.txt

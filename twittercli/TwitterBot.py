@@ -1,17 +1,34 @@
 from time import sleep
 from twittercli import login
 from selenium.common.exceptions import NoSuchElementException
+from twittercli import get_data
+import logging
 
+# INITIALIZE LOGGER
+LOG_FORMAT = "%(name)s %(levelname)s - %(asctime)s - %(message)s"
+logging.basicConfig(filename = get_data('log.txt'),
+                    level = logging.DEBUG,
+                    format = LOG_FORMAT)
+logger = logging.getLogger()
+logger.info('Logger initialized successfully.')
+
+
+# MAIN CLASS
 class TwitterBot:
 
     def __init__(self):
         self.tweetDB = list()
         self.tCores = list()
         self.authInfo = login.manualAuth()
+        logger.info('TwitterBot created for {}.'\
+                    .format(self.authInfo['username']))
      
     def initCore(self, headless=False):
+        logger.info('Initializing tCore...')
         self.tCores.append(login.driverInit(headless))
         self.loginTwitter(self.tCores[-1])
+        logger.info('Core initialized.')
+        logger.info(('numCores = %d') % (len(self.tCores)))
         
     def loginTwitter(self, core):
         core.get('https://www.twitter.com')
@@ -25,13 +42,15 @@ class TwitterBot:
             if not loginMethods: break
             # Authenticate if valid login method given.
             if 'username' in loginMethods:
+                logger.info('Login Method = username')
                 login.authUser(self.authInfo['username'],
                                self.authInfo['password'], core)
             elif 'email' in loginMethods:
+                logger.info('Login Method = email')
                 login.authUser(self.authInfo['email'],
                                self.authInfo['password'], core)
             else:
-                print('Alternate login required by twitter.')
+                logger.warning('Neither default login method accepted.')
                 altLogin = input('Please enter your %s or %s: ' \
                         % tuple(loginMethods))
                 login.authUser(altLogin, 
@@ -67,19 +86,37 @@ class TwitterBot:
         tweetButton.click()
 
 
-    def scrapeTweets(self, numSteps=1, coreNum = -1):
+    def scrapeTweets(self, numSteps=1, stepFactor = 0.5, coreNum = -1):
         """Scrape tweets for given number of full scrolls."""
+        logger.info('Scraping tweets over %d steps.' % (numSteps))
+        logger.info('stepFactor = %f' % (stepFactor))
+        initialSize = len(self.tweetDB)
         core = self.tCores[coreNum]
         JScroll = 'window.scrollTo(0,document.body.scrollHeight);'
         for step in range(numSteps):
+            priorSize = len(self.tweetDB)
             self.tweetDB += [article.text for article in core.find_elements_by_tag_name('article')]
+            netScraped = len(self.tweetDB) - priorSize
+            self.tweetDB = list(set(self.tweetDB))
+            netUnique = len(self.tweetDB) - priorSize
+            netRedundant = netScraped - netUnique
+            logger.debug('%d tweets scraped.' % (netScraped))
+            logger.debug('redundant = %d' % (netRedundant))
+            logger.debug('unique = %d' % (netUnique))
+            logger.debug('netTweets = %d' % (len(self.tweetDB)))
             core.execute_script(JScroll)
             sleep(3)
+        sizeChange = len(self.tweetDB) - initialSize
+        logger.info('Total of %d tweets gathered.' % (sizeChange))
+        
             
     def termCore(self, coreNum = -1):
+        logger.info('Terminating tCore...')
         if len(self.tCores) > 0:
             core = self.tCores.pop(coreNum)
             core.quit()
             del core
+            logger.info('Core terminated.')
+            logger.info(('numCores = %d') % (len(self.tCores)))
         else:
-            print('No cores are active.')
+            logger.warning('No cores remaining!')
